@@ -6,10 +6,10 @@ function getTimeToArrival(bus: BusDetails) {
 }
 
 const ArrivalTable = ({busDetails}:{busDetails:BusDetails[]|undefined}): React.ReactElement => {
-    console.log("ArrivalTable", busDetails);
     if(busDetails==undefined){
         return <></>
     }
+
     if(busDetails.length == 0){
         return <>Sorry nothing running!</>
     }
@@ -33,8 +33,6 @@ const ArrivalTable = ({busDetails}:{busDetails:BusDetails[]|undefined}): React.R
                 {busDetails.map(busDetail => <td>{getTimeToArrival(busDetail)}</td>)}
             </tr>
         </tbody>
-
-
     </Table>
 }
 
