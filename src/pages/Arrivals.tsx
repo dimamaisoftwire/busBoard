@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { ModalPopUp } from '../components/ModalPopUp';
 import { ClipLoader } from 'react-spinners';
+import { Card, CardBody, CardTitle } from 'react-bootstrap';
 
 const SECOND = 1000;
 const TABLE_REFRESH_SECONDS = 10;
@@ -71,15 +72,27 @@ function Arrivals(): React.ReactElement {
   }
 
   return <div className="d-flex flex-column align-items-center">
-    <h1 className="d-flex"> BusBoard </h1>
-    <Form action="" onSubmit={formHandler}>
-      <Form.Group className="mb-3" controlId="postcode">
-        <Form.Label>Postcode</Form.Label>
-        <Form.Control type="text" onChange={updatePostcode} />
-      </Form.Group>
-      <Button variant="primary" type="submit" value="Submit">Submit</Button>
-    </Form>
-    {loading ? <ClipLoader loading={loading} /> : < ArrivalTable busDetails={tableData} />}
+    <Card className="mt-5 text-center" style={{ width: "18rem"}}>
+      <CardBody>
+        <CardTitle> Request bus arrival information </CardTitle>
+        <Form action="" onSubmit={formHandler}>
+          <Form.Group className="mb-3" controlId="postcode">
+            <Form.Label>Postcode</Form.Label>
+            <Form.Control type="text" onChange={updatePostcode} />
+          </Form.Group>
+          <div className="flex flex-col">
+            <Button variant="primary" type="submit" value="Submit">Look up</Button>
+            {loading ? (<div className="mx-5"><ClipLoader loading={loading} /></div>): <></>}
+          </div>
+        </Form>
+      </CardBody>
+    </Card>
+    <h2>Arrivals at: {lastSubmittedPostcode}</h2>
+    { loading ? <></> :
+    <div className={tableData == undefined ?"" : "d-flex mt-5 w-75 border border-primary rounded" /* only draw border if there is a table */}>
+      < ArrivalTable busDetails={tableData}/>
+    </div>
+    }
     <ModalPopUp opened= {isOpen} hideModal={hideModal} />
   </div>
 }
