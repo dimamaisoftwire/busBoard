@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {showArrivalsByPostCode, BusDetails} from '../scripts/busQueries'
+import {getStopPointNextNArrivals, getNearestNStopPointsToPostCode, BusDetails, StopPoint} from '../scripts/busQueries'
 import {ArrivalTable} from '../components/ArrivalTable'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -9,21 +9,27 @@ import { Card, CardBody, CardTitle } from 'react-bootstrap';
 const SECOND = 1000;
 const TABLE_REFRESH_SECONDS = 10;
 
-async function getBuses(postcode:  string): Promise<BusDetails[]> {
-  const busDetails = await showArrivalsByPostCode(postcode);
-
-  return Array.from(busDetails.values())[0];
+async function getBuses(stopPoint: StopPoint): Promise<BusDetails[] | undefined> {
+  return await getStopPointNextNArrivals(stopPoint,5);
 }
+
+
 function valid_postcode(postcode:string) {
   postcode = postcode.replace(/\s/g, "");
-  var regex = /^[A-Z]{1,2}[0-9]{1,2} ?[0-9][A-Z]{2}$/i;
+  let regex = /^[A-Z]{1,2}[0-9]{1,2} ?[0-9][A-Z]{2}$/i;
   return regex.test(postcode);
 }
 
 function Arrivals(): React.ReactElement {
   const [postcode, setPostcode] = useState<string | undefined>(undefined);
   const [lastSubmittedPostcode, setSubmittedPostcode] = useState<string | undefined>(undefined);
-  const [tableData, setTableData] = useState<BusDetails[] | undefined>(undefined);
+
+  const [firstTableData, setFirstTableData] = useState<BusDetails[] | undefined>(undefined);
+  const [firstTableTitle, setFirstTableTitle] = useState<string | undefined>(undefined);
+
+  const [secondTableData, setSecondTableData] = useState<BusDetails[] | undefined>(undefined);
+  const [secondTableTitle, setSecondTableTitle] = useState<string | undefined>(undefined);
+
   const [isOpen, setIsOpen] = React.useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -35,15 +41,18 @@ function Arrivals(): React.ReactElement {
     setIsOpen(false);
   };
 
+
   useEffect (() => {
     const interval = setInterval(() => {
       if (lastSubmittedPostcode !== undefined)  {
+        setLoading(true);
+        updateTables(lastSubmittedPostcode)
+            .then(
+            () => {
+              setLoading(false)
+            }
+        );
 
-        getBuses(lastSubmittedPostcode)
-            .then((data) => {
-
-              setTableData(data)
-            });
       }
     }, TABLE_REFRESH_SECONDS * SECOND)
 
@@ -56,14 +65,37 @@ function Arrivals(): React.ReactElement {
       if(valid_postcode(postcode)){
         setLoading(true);
         setSubmittedPostcode(postcode);
-        const data = await getBuses(postcode);
-        setTableData(data);
-        setLoading(false);
+        updateTables(postcode)
+            .then(
+                () => {
+                  setLoading(false)
+                }
+            );
+
       } else{
         showModal()
       }
     }
+  }
 
+  async function updateTables(postcode: string): Promise<void> {
+    return getNearestNStopPointsToPostCode(postcode,2)
+        .then(
+            (stopPoints) => {
+              if (stopPoints !== undefined) {
+                getBuses(stopPoints[0])
+                    .then((busData) => {
+                      setFirstTableTitle(stopPoints[0].commonName);
+                      setFirstTableData(busData);
+                    });
+                getBuses(stopPoints[1])
+                    .then((busData) => {
+                      setSecondTableTitle(stopPoints[1].commonName);
+                      setSecondTableData(busData);
+                    });
+              }
+
+            });
   }
 
   function updatePostcode(data: React.ChangeEvent<HTMLInputElement>): void {
@@ -86,9 +118,12 @@ function Arrivals(): React.ReactElement {
       </CardBody>
     </Card>
     <h2>Arrivals at: {lastSubmittedPostcode}</h2>
-    <div className={tableData === undefined ?"" : "flex mt-5 w-75" /* only draw border if there is a table */}>
-      < ArrivalTable busDetails={tableData} loading={loading}/>
+    <div className={firstTableData === undefined ?"" : "flex mt-5 w-75" /* only draw border if there is a table */}>
+      < ArrivalTable busDetails={firstTableData} title={secondTableTitle} loading={loading}/>
     </div>
+  <div className={secondTableData === undefined ?"" : "flex mt-5 w-75" /* only draw border if there is a table */}>
+      < ArrivalTable busDetails={secondTableData} title={firstTableTitle} loading={loading}/>
+  </div>
     <ModalPopUp opened= {isOpen} hideModal={hideModal} />
   </div>
 }

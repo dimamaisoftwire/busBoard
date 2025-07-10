@@ -7,7 +7,7 @@ export type BusDetails =  {
     destinationName: string
 }
 
-type StopPoint = {
+export type StopPoint = {
     id: string,
     commonName: string,
     distance: number,
@@ -72,55 +72,19 @@ async function getNearestNStopPoints(geocoords: GeoCoords, count: number): Promi
     }
 }
 
-async function getPostcodeArrivals(postCode: string): Promise<Map<StopPoint,BusDetails[]> | undefined> {
+export async function getNearestNStopPointsToPostCode(postCode: string, n: number): Promise<StopPoint[] | undefined> {
 
     let geocoords = await getPostcodeLocation(postCode);
-    console.log(postCode);
-    console.log(geocoords);
-    if (geocoords === undefined) throw new Error("Undefined postcode coords");
+    if (geocoords === undefined) return undefined;
 
-    let stopPoints = await getNearestNStopPoints(geocoords,2);
-    if (stopPoints === undefined) throw new Error("Undefined stop points");
+    return await getNearestNStopPoints(geocoords,n);
 
-    let stopPointArrivals = new Map<StopPoint, BusDetails[]>();
-
-    for (let stopPoint of stopPoints) {
-        let arrivals = await queryArrivals(stopPoint.id);
-        if (arrivals === undefined) throw new Error(`Undefined arrivals at ${stopPoint.id}`);
-
-        stopPointArrivals.set(stopPoint, arrivals);
-    }
-
-    return stopPointArrivals
 }
 
-/*async function showArrivalsByStopCode() {
-    let stopCode = prompt("Enter Stop Code : ")
-    if (stopCode === null) stopCode = "490008660N"
+export async function getStopPointNextNArrivals(stopPoint: StopPoint, n: number): Promise<BusDetails[]> {
 
-    let arrivals = await queryArrivals(stopCode);
-    if (arrivals == undefined) throw new Error("Undefined arrivals");
+    let arrivals = await queryArrivals(stopPoint.id);
+    if (arrivals === undefined) throw new Error(`Undefined arrivals at ${stopPoint.id}`);
 
-    console.log(getNextNBusDetails(arrivals, 5));
-
-}*/
-
-export async function showArrivalsByPostCode(postCode: string) {
-    let stopArrivals = await getPostcodeArrivals(postCode);
-
-    if (stopArrivals === undefined) throw new Error("Undefined stop arrivals");
-
-    for (let stopPoint of Array.from(stopArrivals.keys())) {
-        const arrivals = stopArrivals.get(stopPoint);
-        if (arrivals === undefined) {throw new Error(`Undefined arrivals at ${stopPoint.id}`);}
-        stopArrivals.set(stopPoint, getNextNBusDetails(arrivals,5));
-    }
-    return stopArrivals;
+    return getNextNBusDetails(arrivals, n)
 }
-//
-// async function testP(){
-//     console.log(await showArrivalsByPostCode("NW51TL"))
-// }
-// testP()
-
-//module.exports = {showArrivalsByPostCode};
