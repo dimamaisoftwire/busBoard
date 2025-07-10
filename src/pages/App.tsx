@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 const SECOND = 1000;
+const TABLE_REFRESH_SECONDS = 30;
 
 async function getBuses(postcode:  string): Promise<BusDetails[]> {
   const busDetails = await showArrivalsByPostCode(postcode);
@@ -30,7 +31,7 @@ function App(): React.ReactElement {
 
 
 
-    }, 30 * SECOND)
+    }, TABLE_REFRESH_SECONDS * SECOND)
 
     return () => clearInterval(interval);
   }, [postcode])
