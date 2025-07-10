@@ -4,7 +4,6 @@ import {ArrivalTable} from '../components/ArrivalTable'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { ModalPopUp } from '../components/ModalPopUp';
-import { ClipLoader } from 'react-spinners';
 import { Card, CardBody, CardTitle } from 'react-bootstrap';
 
 const SECOND = 1000;
@@ -26,7 +25,7 @@ function Arrivals(): React.ReactElement {
   const [lastSubmittedPostcode, setSubmittedPostcode] = useState<string | undefined>(undefined);
   const [tableData, setTableData] = useState<BusDetails[] | undefined>(undefined);
   const [isOpen, setIsOpen] = React.useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const showModal = () => {
     setIsOpen(true);
@@ -82,13 +81,12 @@ function Arrivals(): React.ReactElement {
           </Form.Group>
           <div className="flex flex-col">
             <Button variant="primary" type="submit" value="Submit">Look up</Button>
-            {loading ? (<div className="mx-5"><ClipLoader loading={loading} /></div>): <></>}
           </div>
         </Form>
       </CardBody>
     </Card>
     <h2>Arrivals at: {lastSubmittedPostcode}</h2>
-    <div className={tableData == undefined ?"" : "flex mt-5 w-75 border border-primary rounded" /* only draw border if there is a table */}>
+    <div className={tableData === undefined ?"" : "flex mt-5 w-75" /* only draw border if there is a table */}>
       < ArrivalTable busDetails={tableData} loading={loading}/>
     </div>
     <ModalPopUp opened= {isOpen} hideModal={hideModal} />
