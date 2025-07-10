@@ -6,12 +6,12 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import BusInfo from "./pages/BusInfo";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Navigation} from "./Navigation";
+import {Layout} from "./Layout";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-export default function Home() {
+export default function RouterPage() {
     return (
         <BrowserRouter>
             <Routes>
@@ -25,8 +25,9 @@ export default function Home() {
 }
 root.render(
   <React.StrictMode>
-     <Navigation />
-      <Home />
+     <Layout>
+      <RouterPage />
+     </Layout>
 
   </React.StrictMode>
 );
