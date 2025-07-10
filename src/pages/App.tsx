@@ -1,25 +1,48 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {showArrivalsByPostCode, BusDetails} from '../busQueries'
 import {ArrivalTable} from '../ArrivalTable'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
+const SECOND = 1000;
+const TABLE_REFRESH_SECONDS = 30;
 
-async function getBuses(postcode: string): Promise<BusDetails[]> {
-  // very basic testing string, you'll likely return a list of strings or JSON objects instead!
+async function getBuses(postcode:  string): Promise<BusDetails[]> {
   const busDetails = await showArrivalsByPostCode(postcode);
 
   return Array.from(busDetails.values())[0];
 }
 
 function App(): React.ReactElement {
-  const [postcode, setPostcode] = useState<string>("");
+  const [postcode, setPostcode] = useState<string | undefined>(undefined);
   const [tableData, setTableData] = useState<BusDetails[] | undefined>(undefined);
+
+  useEffect (() => {
+
+    const interval = setInterval(() => {
+      if (postcode != undefined)  {
+
+        getBuses(postcode)
+            .then((data) => {
+
+              setTableData(data)
+            });
+      }
+
+
+
+    }, TABLE_REFRESH_SECONDS * SECOND)
+
+    return () => clearInterval(interval);
+  }, [postcode])
 
   async function formHandler(event: React.FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault(); // to stop the form refreshing the page when it submits
-    const data = await getBuses(postcode);
-    setTableData(data);
+    if (postcode != undefined) {
+      const data = await getBuses(postcode);
+      setTableData(data);
+    }
+
   }
 
   function updatePostcode(data: React.ChangeEvent<HTMLInputElement>): void {
