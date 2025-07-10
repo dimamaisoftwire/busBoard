@@ -16,8 +16,8 @@ export default function Home() {
         <BrowserRouter>
             <Routes>
                 <Route path="/">
-                    <Route index element={<App/>}/>
-                    <Route path="bus" element={<BusInfo/>}/>
+                    <Route path="arrivals" index element={<App/>}/>
+                    <Route path="info" element={<BusInfo/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>
