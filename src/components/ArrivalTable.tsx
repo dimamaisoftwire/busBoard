@@ -7,34 +7,8 @@ function getTimeToArrival(bus: BusDetails) {
     return Math.floor(bus.timeToStation / 60);
 }
 
-const ArrivalTable = ({busDetails, loading}:{busDetails:BusDetails[]|undefined, loading:boolean}): React.ReactElement => {
-    if(loading===true){
-        return(
-        <Table striped>
-            <tbody>
-                <tr>
-                    <td>
-                        Destination
-                    </td>
-                    <td><Placeholder xs={12} bg="primary"/></td>
-                    <td><p><Placeholder/></p></td>
-                </tr>
-                <tr>
-                    <td>
-                        Lines
-                    </td>
-                    <td><p><Placeholder/></p></td>
-                    <td><p><Placeholder/></p></td>
-                </tr>
-                <tr>
-                    <td> Arrives In (minutes)</td>
-                    <td><p><Placeholder/></p></td>
-                    <td><p><Placeholder/></p></td>
-                </tr>
-            </tbody>
-        </Table>);
-    }
-    if(busDetails===undefined){
+const ArrivalTable = ({busDetails, title}:{busDetails:BusDetails[]|undefined, title:string | undefined}): React.ReactElement => {
+    if(busDetails===undefined || title === undefined) {
         return <></>
     }
 
@@ -44,6 +18,9 @@ const ArrivalTable = ({busDetails, loading}:{busDetails:BusDetails[]|undefined, 
 
     return (
         <Table striped>
+
+            <h3>{title}</h3>
+
             <tbody>
                 <tr>
                     <td>
