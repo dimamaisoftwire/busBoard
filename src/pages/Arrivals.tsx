@@ -102,7 +102,7 @@ function Arrivals(): React.ReactElement {
     setPostcode(data.target.value)
   }
 
-  return <div className="d-flex flex-column align-items-center bg-dark h-100">
+  return <div className="d-flex flex-column align-items-center bg-dark">
     <Card className="mt-5 text-center" style={{ width: "18rem"}}>
       <CardBody>
         <CardTitle> Request bus arrival information </CardTitle>
@@ -118,10 +118,10 @@ function Arrivals(): React.ReactElement {
       </CardBody>
     </Card>
     <h2>Arrivals at: {lastSubmittedPostcode}</h2>
-    <div className={firstTableData === undefined ?"" : "flex mt-5 w-75" /* only draw border if there is a table */}>
+    <div className={firstTableData === undefined ?"" : "flex w-75" /* only draw border if there is a table */}>
       < ArrivalTable busDetails={firstTableData} title={secondTableTitle} loading={loading}/>
     </div>
-  <div className={secondTableData === undefined ?"" : "flex mt-5 w-75" /* only draw border if there is a table */}>
+  <div className={secondTableData === undefined ?"" : "flex mt-5 w-75 mb-5" /* only draw border if there is a table */}>
       < ArrivalTable busDetails={secondTableData} title={firstTableTitle} loading={loading}/>
   </div>
     <ModalPopUp opened= {isOpen} hideModal={hideModal} />
