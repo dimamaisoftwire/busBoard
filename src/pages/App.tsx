@@ -3,6 +3,7 @@ import {showArrivalsByPostCode, BusDetails} from '../busQueries'
 import {ArrivalTable} from '../ArrivalTable'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { ModalPopUp } from '../ModalPopUp';
 
 const SECOND = 1000;
 const TABLE_REFRESH_SECONDS = 30;
@@ -12,10 +13,24 @@ async function getBuses(postcode:  string): Promise<BusDetails[]> {
 
   return Array.from(busDetails.values())[0];
 }
+function valid_postcode(postcode:string) {
+  postcode = postcode.replace(/\s/g, "");
+  var regex = /^[A-Z]{1,2}[0-9]{1,2} ?[0-9][A-Z]{2}$/i;
+  return regex.test(postcode);
+}
 
 function App(): React.ReactElement {
   const [postcode, setPostcode] = useState<string | undefined>(undefined);
   const [tableData, setTableData] = useState<BusDetails[] | undefined>(undefined);
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const showModal = () => {
+    setIsOpen(true);
+  };
+
+  const hideModal = () => {
+    setIsOpen(false);
+  };
 
   useEffect (() => {
     const interval = setInterval(() => {
@@ -35,8 +50,12 @@ function App(): React.ReactElement {
   async function formHandler(event: React.FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault(); // to stop the form refreshing the page when it submits
     if (postcode != undefined) {
-      const data = await getBuses(postcode);
-      setTableData(data);
+      if(valid_postcode(postcode)){
+        const data = await getBuses(postcode);
+        setTableData(data);
+      } else{
+        showModal()
+      }
     }
 
   }
@@ -63,6 +82,7 @@ function App(): React.ReactElement {
       <Button variant="primary" type="submit" value="Submit">Submit</Button>
     </Form>
     < ArrivalTable busDetails={tableData} />
+    <ModalPopUp opened= {isOpen} showModal={showModal} hideModal={hideModal} />
   </div>
 }
 
