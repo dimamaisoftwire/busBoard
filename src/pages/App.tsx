@@ -26,7 +26,7 @@ function App(): React.ReactElement {
   const [lastSubmittedPostcode, setSubmittedPostcode] = useState<string | undefined>(undefined);
   const [tableData, setTableData] = useState<BusDetails[] | undefined>(undefined);
   const [isOpen, setIsOpen] = React.useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const showModal = () => {
     setIsOpen(true);
@@ -49,7 +49,7 @@ function App(): React.ReactElement {
     }, TABLE_REFRESH_SECONDS * SECOND)
 
     return () => clearInterval(interval);
-  }, [postcode])
+  }, [lastSubmittedPostcode])
 
   async function formHandler(event: React.FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault(); // to stop the form refreshing the page when it submits
@@ -80,17 +80,16 @@ function App(): React.ReactElement {
             <Form.Label>Postcode</Form.Label>
             <Form.Control type="text" onChange={updatePostcode} />
           </Form.Group>
-          <div className="d-flex flex-row">
+          <div className="flex flex-col">
             <Button variant="primary" type="submit" value="Submit">Look up</Button>
             {loading ? (<div className="mx-5"><ClipLoader loading={loading} /></div>): <></>}
           </div>
         </Form>
       </CardBody>
     </Card>
-    {/*loading ? <ClipLoader loading={loading} /> : < ArrivalTable busDetails={tableData} />*/}
     <h2>Arrivals at: {lastSubmittedPostcode}</h2>
     { loading ? <></> :
-    <div className="d-flex mt-5 w-75 border border-primary rounded">
+    <div className={tableData == undefined ?"" : "d-flex mt-5 w-75 border border-primary rounded" /* only draw border if there is a table */}>
       < ArrivalTable busDetails={tableData}/>
     </div>
     }
