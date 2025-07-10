@@ -19,7 +19,7 @@ function valid_postcode(postcode:string) {
   return regex.test(postcode);
 }
 
-function App(): React.ReactElement {
+function Arrivals(): React.ReactElement {
   const [postcode, setPostcode] = useState<string | undefined>(undefined);
   const [tableData, setTableData] = useState<BusDetails[] | undefined>(undefined);
   const [isOpen, setIsOpen] = React.useState(false);
@@ -86,4 +86,4 @@ function App(): React.ReactElement {
   </div>
 }
 
-export default App;
+export default Arrivals;
