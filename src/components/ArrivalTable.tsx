@@ -1,43 +1,87 @@
 import {BusDetails} from "../scripts/busQueries";
 import Table from 'react-bootstrap/Table';
+import {Placeholder} from "react-bootstrap";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import React from "react";
 
 function getTimeToArrival(bus: BusDetails) {
     return Math.floor(bus.timeToStation / 60);
 }
 
-const ArrivalTable = ({busDetails, title}:{busDetails:BusDetails[]|undefined, title:string | undefined}): React.ReactElement => {
-    if(busDetails===undefined || title === undefined) {
+const TablePlaceHolder = ({width} :{width:number}): React.ReactElement => {
+    return <td>
+        <Placeholder as="p" animation="glow">
+            <Placeholder xs={12} style={{width : width + 'em'}} />
+        </Placeholder>
+    </td>
+}
+
+const ArrivalTable = ({busDetails, loading, title}:{busDetails:BusDetails[]|undefined, loading:boolean, title:string | undefined}): React.ReactElement => {
+    if(busDetails === undefined || title === undefined) {
         return <></>
     }
 
-    if(busDetails.length === 0){
+    if (busDetails.length === 0) {
         return <>Sorry nothing running!</>
     }
 
     return (
-        <Table striped>
-
+        <>
             <h3>{title}</h3>
-
-            <tbody>
-                <tr>
-                    <td>
-                        Destination
-                    </td>
-                    {busDetails.map(busDetail => <td>{busDetail.destinationName}</td>)}
-                </tr>
-                <tr>
-                    <td>
-                        Lines
-                    </td>
-                    {busDetails.map(busDetail => <td>{busDetail.lineName}</td>)}
-                </tr>
-                <tr>
-                    <td> Arrives In (minutes)</td>
-                    {busDetails.map(busDetail => <td>{getTimeToArrival(busDetail)}</td>)}
-                </tr>
-            </tbody>
-        </Table>);
+            <div style={{borderRadius: 6, overflow:'hidden'}}>
+                <Table className="rounded mb-0" striped>
+                    <tbody>
+                        <tr>
+                            <td>
+                                Destination
+                            </td>
+                            {
+                                loading ?
+                                    <>
+                                        <TablePlaceHolder width={8}/>
+                                        <TablePlaceHolder width={8}/>
+                                        <TablePlaceHolder width={8}/>
+                                        <TablePlaceHolder width={8}/>
+                                        <TablePlaceHolder width={8}/>
+                                    </>
+                                    :busDetails.map(busDetail => <td><p>{busDetail.destinationName}</p></td>)
+                            }
+                        </tr>
+                        <tr>
+                            <td>
+                                Lines
+                            </td>
+                            {
+                                loading ?
+                                <>
+                                    <TablePlaceHolder width={8}/>
+                                    <TablePlaceHolder width={8}/>
+                                    <TablePlaceHolder width={8}/>
+                                    <TablePlaceHolder width={8}/>
+                                    <TablePlaceHolder width={8}/>
+                                </>
+                                : busDetails.map(busDetail => <td><p>{busDetail.lineName}</p></td>)
+                            }
+                        </tr>
+                        <tr>
+                            <td> Arrives In (minutes)</td>
+                            {
+                                loading ?
+                                    <>
+                                        <TablePlaceHolder width={8}/>
+                                        <TablePlaceHolder width={8}/>
+                                        <TablePlaceHolder width={8}/>
+                                        <TablePlaceHolder width={8}/>
+                                        <TablePlaceHolder width={8}/>
+                                    </>
+                                    : busDetails.map(busDetail => <td><p>{getTimeToArrival(busDetail)}</p></td>)
+                            }
+                        </tr>
+                    </tbody>
+                </Table>
+            </div>
+        </>
+    )
 }
 
 export {ArrivalTable};
