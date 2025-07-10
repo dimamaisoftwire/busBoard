@@ -3,9 +3,9 @@ import {Navigation} from "./Navigation";
 
 const Layout = ({children} : {children:React.ReactElement}): React.ReactElement => {
     return(
-        <div style={{height:720}}>
+        <div style={{height:'100%', width:'100%', minHeight:'100vh'}}>
             <Navigation/>
-            <main style={{height:"100%"}}>{children}</main>
+            <main style={{height:"90%"}}>{children}</main>
         </div>
     )
 }
