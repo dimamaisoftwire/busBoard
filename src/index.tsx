@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import BusInfo from "./pages/BusInfo";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Layout} from "./Layout";
+import {Layout} from "./components/Layout";
 import Home from "./pages/Home";
 
 const root = ReactDOM.createRoot(
