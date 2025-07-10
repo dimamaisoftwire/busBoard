@@ -16,7 +16,7 @@ const TablePlaceHolder = ({width} :{width:number}): React.ReactElement => {
     </td>
 }
 
-const ArrivalTable = ({busDetails, title}:{busDetails:BusDetails[]|undefined, , loading:boolean, title:string | undefined}): React.ReactElement => {
+const ArrivalTable = ({busDetails, loading, title}:{busDetails:BusDetails[]|undefined, loading:boolean, title:string | undefined}): React.ReactElement => {
     if(busDetails === undefined || title === undefined) {
         return <></>
     }
