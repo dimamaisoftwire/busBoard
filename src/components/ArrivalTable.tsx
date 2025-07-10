@@ -14,26 +14,27 @@ const ArrivalTable = ({busDetails}:{busDetails:BusDetails[]|undefined}): React.R
         return <>Sorry nothing running!</>
     }
 
-    return <Table striped className="mt-5 mx-5">
-        <tbody>
-            <tr>
-                <td>
-                    Destination
-                </td>
-                {busDetails.map(busDetail => <td>{busDetail.destinationName}</td>)}
-            </tr>
-            <tr>
-                <td>
-                    Lines
-                </td>
-                {busDetails.map(busDetail => <td>{busDetail.lineName}</td>)}
-            </tr>
-            <tr>
-                <td> Arrives In (minutes)</td>
-                {busDetails.map(busDetail => <td>{getTimeToArrival(busDetail)}</td>)}
-            </tr>
-        </tbody>
-    </Table>
+    return (
+        <Table striped>
+            <tbody>
+                <tr>
+                    <td>
+                        Destination
+                    </td>
+                    {busDetails.map(busDetail => <td>{busDetail.destinationName}</td>)}
+                </tr>
+                <tr>
+                    <td>
+                        Lines
+                    </td>
+                    {busDetails.map(busDetail => <td>{busDetail.lineName}</td>)}
+                </tr>
+                <tr>
+                    <td> Arrives In (minutes)</td>
+                    {busDetails.map(busDetail => <td>{getTimeToArrival(busDetail)}</td>)}
+                </tr>
+            </tbody>
+        </Table>);
 }
 
 export {ArrivalTable};
