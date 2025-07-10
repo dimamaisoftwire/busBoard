@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {showArrivalsByPostCode, BusDetails} from '../busQueries'
-import {ArrivalTable} from '../ArrivalTable'
+import {showArrivalsByPostCode, BusDetails} from '../scripts/busQueries'
+import {ArrivalTable} from '../components/ArrivalTable'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { ModalPopUp } from '../ModalPopUp';
+import { ModalPopUp } from '../components/ModalPopUp';
 
 const SECOND = 1000;
 const TABLE_REFRESH_SECONDS = 10;

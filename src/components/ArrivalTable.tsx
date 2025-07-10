@@ -1,4 +1,4 @@
-import {BusDetails} from "./busQueries";
+import {BusDetails} from "../scripts/busQueries";
 import Table from 'react-bootstrap/Table';
 
 function getTimeToArrival(bus: BusDetails) {
