@@ -4,6 +4,7 @@ import {ArrivalTable} from '../components/ArrivalTable'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { ModalPopUp } from '../components/ModalPopUp';
+import { ClipLoader } from 'react-spinners';
 
 const SECOND = 1000;
 const TABLE_REFRESH_SECONDS = 10;
@@ -24,6 +25,7 @@ function App(): React.ReactElement {
   const [lastSubmittedPostcode, setSubmittedPostcode] = useState<string | undefined>(undefined);
   const [tableData, setTableData] = useState<BusDetails[] | undefined>(undefined);
   const [isOpen, setIsOpen] = React.useState(false);
+  const [loading, setLoading] = useState(false);
 
   const showModal = () => {
     setIsOpen(true);
@@ -52,9 +54,11 @@ function App(): React.ReactElement {
     event.preventDefault(); // to stop the form refreshing the page when it submits
     if (postcode != undefined) {
       if(valid_postcode(postcode)){
+        setLoading(true);
         setSubmittedPostcode(postcode);
         const data = await getBuses(postcode);
         setTableData(data);
+        setLoading(false);
       } else{
         showModal()
       }
@@ -75,7 +79,7 @@ function App(): React.ReactElement {
       </Form.Group>
       <Button variant="primary" type="submit" value="Submit">Submit</Button>
     </Form>
-    < ArrivalTable busDetails={tableData} />
+    {loading ? <ClipLoader loading={loading} /> : < ArrivalTable busDetails={tableData} />}
     <ModalPopUp opened= {isOpen} showModal={showModal} hideModal={hideModal} />
   </div>
 }
