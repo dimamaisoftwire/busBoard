@@ -21,7 +21,7 @@ function valid_postcode(postcode:string) {
   return regex.test(postcode);
 }
 
-function App(): React.ReactElement {
+function Arrivals(): React.ReactElement {
   const [postcode, setPostcode] = useState<string | undefined>(undefined);
   const [lastSubmittedPostcode, setSubmittedPostcode] = useState<string | undefined>(undefined);
   const [tableData, setTableData] = useState<BusDetails[] | undefined>(undefined);
@@ -38,7 +38,7 @@ function App(): React.ReactElement {
 
   useEffect (() => {
     const interval = setInterval(() => {
-      if (lastSubmittedPostcode != undefined)  {
+      if (lastSubmittedPostcode !== undefined)  {
 
         getBuses(lastSubmittedPostcode)
             .then((data) => {
@@ -53,7 +53,7 @@ function App(): React.ReactElement {
 
   async function formHandler(event: React.FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault(); // to stop the form refreshing the page when it submits
-    if (postcode != undefined) {
+    if (postcode !== undefined) {
       if(valid_postcode(postcode)){
         setLoading(true);
         setSubmittedPostcode(postcode);
@@ -93,8 +93,8 @@ function App(): React.ReactElement {
       < ArrivalTable busDetails={tableData}/>
     </div>
     }
-    <ModalPopUp opened= {isOpen} showModal={showModal} hideModal={hideModal} />
+    <ModalPopUp opened= {isOpen} hideModal={hideModal} />
   </div>
 }
 
-export default App;
+export default Arrivals;

@@ -77,16 +77,16 @@ async function getPostcodeArrivals(postCode: string): Promise<Map<StopPoint,BusD
     let geocoords = await getPostcodeLocation(postCode);
     console.log(postCode);
     console.log(geocoords);
-    if (geocoords == undefined) throw new Error("Undefined postcode coords");
+    if (geocoords === undefined) throw new Error("Undefined postcode coords");
 
     let stopPoints = await getNearestNStopPoints(geocoords,2);
-    if (stopPoints == undefined) throw new Error("Undefined stop points");
+    if (stopPoints === undefined) throw new Error("Undefined stop points");
 
-    let stopPointArrivals = new Map<StopPoint, BusDetails[]>
+    let stopPointArrivals = new Map<StopPoint, BusDetails[]>();
 
     for (let stopPoint of stopPoints) {
         let arrivals = await queryArrivals(stopPoint.id);
-        if (arrivals == undefined) throw new Error(`Undefined arrivals at ${stopPoint.id}`);
+        if (arrivals === undefined) throw new Error(`Undefined arrivals at ${stopPoint.id}`);
 
         stopPointArrivals.set(stopPoint, arrivals);
     }
@@ -108,11 +108,11 @@ async function getPostcodeArrivals(postCode: string): Promise<Map<StopPoint,BusD
 export async function showArrivalsByPostCode(postCode: string) {
     let stopArrivals = await getPostcodeArrivals(postCode);
 
-    if (stopArrivals == undefined) throw new Error("Undefined stop arrivals");
+    if (stopArrivals === undefined) throw new Error("Undefined stop arrivals");
 
     for (let stopPoint of Array.from(stopArrivals.keys())) {
         const arrivals = stopArrivals.get(stopPoint);
-        if (arrivals == undefined) {throw new Error(`Undefined arrivals at ${stopPoint.id}`);}
+        if (arrivals === undefined) {throw new Error(`Undefined arrivals at ${stopPoint.id}`);}
         stopArrivals.set(stopPoint, getNextNBusDetails(arrivals,5));
     }
     return stopArrivals;

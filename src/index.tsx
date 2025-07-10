@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './pages/App';
+import Arrivals from './pages/Arrivals';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import BusInfo from "./pages/BusInfo";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Layout} from "./Layout";
+import {Layout} from "./components/Layout";
+import Home from "./pages/Home";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,8 +17,10 @@ export default function RouterPage() {
         <BrowserRouter>
             <Routes>
                 <Route path="/">
-                    <Route path="arrivals" index element={<App/>}/>
+                    <Route path="home" index element={<Home/>}/>
+                    <Route path="arrivals" index element={<Arrivals/>}/>
                     <Route path="info" element={<BusInfo/>}/>
+                    <Route path="/" element={<Home/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>

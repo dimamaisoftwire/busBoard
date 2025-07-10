@@ -1,7 +1,7 @@
 import Modal from "react-bootstrap/Modal";
-import React, {useEffect, useState} from 'react';
+import React from "react";
 
-const ModalPopUp = ({opened, showModal, hideModal} : {opened:boolean, showModal:() => void, hideModal:() => void}): React.ReactElement => {
+const ModalPopUp = ({opened, hideModal} : {opened:boolean, hideModal:() => void}): React.ReactElement => {
     return (
     <Modal show={opened} onHide={hideModal}>
         <Modal.Header>
