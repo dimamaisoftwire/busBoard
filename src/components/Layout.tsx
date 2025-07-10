@@ -3,10 +3,10 @@ import {Navigation} from "./Navigation";
 
 const Layout = ({children} : {children:React.ReactElement}): React.ReactElement => {
     return(
-        <>
-            <Navigation />
-            <main>{children}</main>
-        </>
+        <div style={{height:720}}>
+            <Navigation/>
+            <main style={{height:"90%"}}>{children}</main>
+        </div>
     )
 }
 

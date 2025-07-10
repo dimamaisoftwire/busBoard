@@ -4,9 +4,9 @@ import Navbar from 'react-bootstrap/Navbar';
 import React from "react";
 
 const Navigation = (): React.ReactElement => {
-    return <Navbar expand="lg" className="bg-body-tertiary">
+    return <Navbar expand="lg" className="bg-body-tertiary" style={{height:"10%"}}>
         <Container>
-            <Navbar.Brand href="#home">Bus Board</Navbar.Brand>
+            <Navbar.Brand href="home">Bus Board</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">

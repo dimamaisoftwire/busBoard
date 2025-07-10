@@ -17,9 +17,10 @@ export default function RouterPage() {
         <BrowserRouter>
             <Routes>
                 <Route path="/">
-                    <Route path="arrivals" index element={<Home/>}/>
+                    <Route path="home" index element={<Home/>}/>
                     <Route path="arrivals" index element={<Arrivals/>}/>
                     <Route path="info" element={<BusInfo/>}/>
+                    <Route path="/" element={<Home/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>

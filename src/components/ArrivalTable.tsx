@@ -6,11 +6,11 @@ function getTimeToArrival(bus: BusDetails) {
 }
 
 const ArrivalTable = ({busDetails}:{busDetails:BusDetails[]|undefined}): React.ReactElement => {
-    if(busDetails==undefined){
+    if(busDetails===undefined){
         return <></>
     }
 
-    if(busDetails.length == 0){
+    if(busDetails.length === 0){
         return <>Sorry nothing running!</>
     }
 

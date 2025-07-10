@@ -35,7 +35,7 @@ function Arrivals(): React.ReactElement {
 
   useEffect (() => {
     const interval = setInterval(() => {
-      if (lastSubmittedPostcode != undefined)  {
+      if (lastSubmittedPostcode !== undefined)  {
 
         getBuses(lastSubmittedPostcode)
             .then((data) => {
@@ -46,11 +46,11 @@ function Arrivals(): React.ReactElement {
     }, TABLE_REFRESH_SECONDS * SECOND)
 
     return () => clearInterval(interval);
-  }, [postcode])
+  }, [lastSubmittedPostcode])
 
   async function formHandler(event: React.FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault(); // to stop the form refreshing the page when it submits
-    if (postcode != undefined) {
+    if (postcode !== undefined) {
       if(valid_postcode(postcode)){
         setSubmittedPostcode(postcode);
         const data = await getBuses(postcode);
@@ -76,7 +76,7 @@ function Arrivals(): React.ReactElement {
       <Button variant="primary" type="submit" value="Submit">Submit</Button>
     </Form>
     < ArrivalTable busDetails={tableData} />
-    <ModalPopUp opened= {isOpen} showModal={showModal} hideModal={hideModal} />
+    <ModalPopUp opened= {isOpen} hideModal={hideModal} />
   </div>
 }
 
