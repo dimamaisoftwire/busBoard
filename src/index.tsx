@@ -6,17 +6,18 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import BusInfo from "./pages/BusInfo";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {Layout} from "./Layout";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-export default function Home() {
+export default function RouterPage() {
     return (
         <BrowserRouter>
             <Routes>
                 <Route path="/">
-                    <Route index element={<App/>}/>
-                    <Route path="bus" element={<BusInfo/>}/>
+                    <Route path="arrivals" index element={<App/>}/>
+                    <Route path="info" element={<BusInfo/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>
@@ -24,7 +25,10 @@ export default function Home() {
 }
 root.render(
   <React.StrictMode>
-    <Home />
+     <Layout>
+      <RouterPage />
+     </Layout>
+
   </React.StrictMode>
 );
 

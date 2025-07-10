@@ -33,7 +33,6 @@ function App(): React.ReactElement {
   };
 
   useEffect (() => {
-
     const interval = setInterval(() => {
       if (postcode != undefined)  {
 
@@ -43,9 +42,6 @@ function App(): React.ReactElement {
               setTableData(data)
             });
       }
-
-
-
     }, TABLE_REFRESH_SECONDS * SECOND)
 
     return () => clearInterval(interval);
