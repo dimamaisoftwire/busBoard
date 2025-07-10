@@ -15,7 +15,7 @@ const ModalPopUp = ({opened, showModal, hideModal} : {opened:boolean, showModal:
         </Modal.Header>
         <Modal.Body>Invalid postcode!</Modal.Body>
         <Modal.Footer>
-          <button onClick={hideModal}>Cancel</button>
+          <button onClick={hideModal}>Got it.</button>
         </Modal.Footer>
       </Modal>
   );
