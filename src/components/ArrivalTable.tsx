@@ -5,8 +5,8 @@ function getTimeToArrival(bus: BusDetails) {
     return Math.floor(bus.timeToStation / 60);
 }
 
-const ArrivalTable = ({busDetails}:{busDetails:BusDetails[]|undefined}): React.ReactElement => {
-    if(busDetails===undefined){
+const ArrivalTable = ({busDetails, title}:{busDetails:BusDetails[]|undefined, title:string | undefined}): React.ReactElement => {
+    if(busDetails===undefined || title === undefined) {
         return <></>
     }
 
@@ -16,6 +16,9 @@ const ArrivalTable = ({busDetails}:{busDetails:BusDetails[]|undefined}): React.R
 
     return (
         <Table striped>
+
+            <h3>{title}</h3>
+
             <tbody>
                 <tr>
                     <td>
