@@ -26,7 +26,7 @@ function Arrivals(): React.ReactElement {
   const [lastSubmittedPostcode, setSubmittedPostcode] = useState<string | undefined>(undefined);
   const [tableData, setTableData] = useState<BusDetails[] | undefined>(undefined);
   const [isOpen, setIsOpen] = React.useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const showModal = () => {
     setIsOpen(true);
@@ -71,7 +71,7 @@ function Arrivals(): React.ReactElement {
     setPostcode(data.target.value)
   }
 
-  return <div className="d-flex flex-column align-items-center">
+  return <div className="d-flex flex-column align-items-center bg-dark h-100">
     <Card className="mt-5 text-center" style={{ width: "18rem"}}>
       <CardBody>
         <CardTitle> Request bus arrival information </CardTitle>
@@ -88,11 +88,9 @@ function Arrivals(): React.ReactElement {
       </CardBody>
     </Card>
     <h2>Arrivals at: {lastSubmittedPostcode}</h2>
-    { loading ? <></> :
-    <div className={tableData == undefined ?"" : "d-flex mt-5 w-75 border border-primary rounded" /* only draw border if there is a table */}>
-      < ArrivalTable busDetails={tableData}/>
+    <div className={tableData == undefined ?"" : "flex mt-5 w-75 border border-primary rounded" /* only draw border if there is a table */}>
+      < ArrivalTable busDetails={tableData} loading={loading}/>
     </div>
-    }
     <ModalPopUp opened= {isOpen} hideModal={hideModal} />
   </div>
 }

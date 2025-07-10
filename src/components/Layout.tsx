@@ -5,7 +5,7 @@ const Layout = ({children} : {children:React.ReactElement}): React.ReactElement 
     return(
         <div style={{height:720}}>
             <Navigation/>
-            <main style={{height:"90%"}}>{children}</main>
+            <main style={{height:"100%"}}>{children}</main>
         </div>
     )
 }
