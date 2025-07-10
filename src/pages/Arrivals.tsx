@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {showArrivalsByPostCode, BusDetails} from '../busQueries'
-import {ArrivalTable} from '../ArrivalTable'
+import {showArrivalsByPostCode, BusDetails} from '../scripts/busQueries'
+import {ArrivalTable} from '../components/ArrivalTable'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { ModalPopUp } from '../ModalPopUp';
+import { ModalPopUp } from '../components/ModalPopUp';
 
 const SECOND = 1000;
-const TABLE_REFRESH_SECONDS = 30;
+const TABLE_REFRESH_SECONDS = 10;
 
 async function getBuses(postcode:  string): Promise<BusDetails[]> {
   const busDetails = await showArrivalsByPostCode(postcode);
@@ -21,6 +21,7 @@ function valid_postcode(postcode:string) {
 
 function Arrivals(): React.ReactElement {
   const [postcode, setPostcode] = useState<string | undefined>(undefined);
+  const [lastSubmittedPostcode, setSubmittedPostcode] = useState<string | undefined>(undefined);
   const [tableData, setTableData] = useState<BusDetails[] | undefined>(undefined);
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -34,9 +35,9 @@ function Arrivals(): React.ReactElement {
 
   useEffect (() => {
     const interval = setInterval(() => {
-      if (postcode != undefined)  {
+      if (lastSubmittedPostcode != undefined)  {
 
-        getBuses(postcode)
+        getBuses(lastSubmittedPostcode)
             .then((data) => {
 
               setTableData(data)
@@ -51,6 +52,7 @@ function Arrivals(): React.ReactElement {
     event.preventDefault(); // to stop the form refreshing the page when it submits
     if (postcode != undefined) {
       if(valid_postcode(postcode)){
+        setSubmittedPostcode(postcode);
         const data = await getBuses(postcode);
         setTableData(data);
       } else{
@@ -65,14 +67,6 @@ function Arrivals(): React.ReactElement {
   }
 
   return <div className="d-flex flex-column align-items-center">
-  {/*<h1> BusBoard </h1>
-    <form action="" onSubmit={formHandler}>
-      <label htmlFor="postcodeInput"> Postcode: </label>
-      <input type="text" id="postcodeInput" onChange={updatePostcode}/>
-      <input type="submit" value="Submit"/>
-    </form>
-    < ArrivalTable busDetails={tableData}/>
-  </>;*/}
     <h1 className="d-flex"> BusBoard </h1>
     <Form action="" onSubmit={formHandler}>
       <Form.Group className="mb-3" controlId="postcode">
