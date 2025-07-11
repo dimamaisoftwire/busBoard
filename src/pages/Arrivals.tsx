@@ -11,6 +11,7 @@ const SECOND = 1000;
 const TABLE_REFRESH_SECONDS = 10;
 
 async function getBuses(stopPoint: StopPoint): Promise<BusDetails[] | undefined> {
+  if (!stopPoint) return undefined;
   return await getStopPointNextNArrivals(stopPoint,5);
 }
 
@@ -84,16 +85,23 @@ function Arrivals(): React.ReactElement {
         .then(
             (stopPoints) => {
               if (stopPoints !== undefined) {
-                getBuses(stopPoints[0])
-                    .then((busData) => {
-                      setFirstTableTitle(stopPoints[0].commonName);
-                      setFirstTableData(busData);
-                    });
-                getBuses(stopPoints[1])
-                    .then((busData) => {
-                      setSecondTableTitle(stopPoints[1].commonName);
-                      setSecondTableData(busData);
-                    });
+                if (stopPoints[0] !== undefined ) {
+                  getBuses(stopPoints[0])
+                      .then((busData) => {
+                        setFirstTableTitle(stopPoints[0].commonName);
+                        setFirstTableData(busData);
+                      });
+                }
+
+                if (stopPoints[1] !== undefined ) {
+                  getBuses(stopPoints[1])
+                      .then((busData) => {
+                        setSecondTableTitle(stopPoints[1].commonName);
+                        setSecondTableData(busData);
+                      });
+                }
+
+
               }
 
             });
