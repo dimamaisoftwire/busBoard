@@ -6,7 +6,6 @@ const Layout = ({children} : {children:React.ReactElement}): React.ReactElement 
         <div className="container-fluid vh-100 d-flex flex-column p-0">
             <Navigation/>
             <main className="bg-dark vh-100">{children}</main>
-            {/*<main style={{height:"90%"}}>{children}</main>*/}
         </div>
     )
 }

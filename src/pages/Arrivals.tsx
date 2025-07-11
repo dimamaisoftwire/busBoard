@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { ModalPopUp } from '../components/ModalPopUp';
 import { Card, CardBody, CardTitle } from 'react-bootstrap';
+import { ClipLoader } from 'react-spinners';
 
 const SECOND = 1000;
 const TABLE_REFRESH_SECONDS = 10;
@@ -113,6 +114,7 @@ function Arrivals(): React.ReactElement {
           </Form.Group>
           <div className="flex flex-col">
             <Button variant="primary" type="submit" value="Submit">Look up</Button>
+            {loading ? <ClipLoader loading={loading} /> : <></>}
           </div>
         </Form>
       </CardBody>
